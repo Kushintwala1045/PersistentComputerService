@@ -1,0 +1,279 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #FFFF;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100%;
+    flex-direction: column;
+    box-sizing: border-box; /* Ensures consistent box model */
+}
+
+
+
+/* Adjust the form container */
+form {
+    background-color: #fff;
+    padding: 15px; /* Reduced padding */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px; /* Reduced max width */
+    margin: 10px auto; /* Center form */
+    box-sizing: border-box;
+    text-align: left; /* Changed alignment */
+}
+
+/* Form heading */
+h1 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    line-height: 1.3;
+    text-align: center; /* Keeps the heading centered */
+}
+
+/* Label and input adjustments */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 13px; /* Reduced font size */
+    text-align: left; /* Align labels to the left */
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 8px; /* Reduced padding */
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 13px; /* Reduced font size */
+    background-color: #f9f9f9;
+    box-sizing: border-box; /* Ensures padding doesn't overflow */
+}
+
+textarea {
+    height: 80px; /* Reduced height */
+    resize: vertical;
+}
+
+/* Submit button styles */
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Loader styles */
+#loader {
+    display: none;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#loader img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+/* Popup styles */
+#popup {
+    display: none;
+    background-color: #e7f7e7;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%;
+    max-width: 300px; /* Adjusted width */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+}
+
+#popup h3 {
+    color: green;
+    margin-bottom: 10px;
+}
+
+#popup p {
+    color: #333;
+}
+
+#popup span {
+    font-weight: bold;
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+    form {
+        width: 95%;
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.3em;
+    }
+
+    input[type="submit"] {
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+}
+#logo {
+    height: 80px;
+    margin: 20px; /* Adds spacing around the logo */
+    display: block; /* Ensures proper flow in layout */
+}
+/* Top-right label and button */
+#top-right {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px; /* Space between label and button */
+}
+
+/* Label styling */
+#top-right label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+/* Button styling */
+#top-right button {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 14px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#top-right button:hover {
+    background-color: red;
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+    /* Adjust label and button for smaller screens */
+    #top-right {
+        top: 10px; /* Reduce the space from the top */
+        right: 10px; /* Reduce the space from the right */
+        gap: 8px; /* Reduce the gap between label and button */
+    }
+
+    #top-right label {
+        font-size: 12px; /* Make the label font size smaller */
+    }
+
+    #top-right button {
+        font-size: 12px; /* Make the button font size smaller */
+        padding: 6px 12px; /* Reduce button padding */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #logo {
+        margin:20px auto;
+       height: 60px;
+   }
+    /* Further adjustments for very small screens */
+    #top-right {
+        top: 5px; /* Even smaller top space */
+        right: 5px; /* Even smaller right space */
+        gap: 5px; /* Minimal gap between label and button */
+    }
+
+    #top-right label {
+        font-size: 10px; /* Even smaller font size for label */
+    }
+
+    #top-right button {
+        font-size: 10px; /* Even smaller font size for button */
+        padding: 5px 10px; /* Even smaller button padding */
+    }
+}
+
+/* Ensure dropdown and other inputs are unaffected by the top-right styling */
+select, input, textarea {
+    font-size: 14px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+select, input, textarea {
+    width: 100%;
+}
+
+/* Additional adjustments for responsive form elements */
+@media screen and (max-width: 768px) {
+    select, input, textarea {
+        padding: 8px;
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    select, input, textarea {
+        padding: 6px;
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    
+
+    h1 {
+        font-size: 1.2em;
+    }
+
+    form {
+        width: 90%;
+        padding: 8px;
+    }
+
+    input, textarea, select {
+        font-size: 12px;
+    }
+
+    input[type="submit"] {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    label {
+        font-size: 12px;
+    }
+}

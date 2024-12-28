@@ -1,0 +1,127 @@
+/* Global reset to include box-sizing */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 20px; /* Adds space around body */
+    position: relative; /* For positioning the logo */
+}
+
+/* Logo position */
+#logo {
+    height: 80px;
+    margin: 20px; /* Adds spacing around the logo */
+    position: absolute; /* Positions the logo relative to the body */
+    top: 20px;
+    left: 20px;
+    display: block;
+}
+
+@media screen and (max-width: 480px) {
+    #logo {
+        margin: 20px auto;
+        height: 60px; /* Smaller logo on smaller screens */
+        top: 10px; /* Adjust top position for smaller screens */
+        left: 10px; /* Adjust left position for smaller screens */
+    }
+}
+
+/* Form styling */
+form {
+    background: white;
+    padding: 40px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px; /* Ensure the form doesn't get too wide */
+    text-align: center;
+    margin-top: 100px; /* Space between the logo and the form */
+}
+
+form h2 {
+    margin-bottom: 20px;
+}
+
+form input, form button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+form button {
+    background: #5cb85c;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%; /* Ensure button takes full width */
+}
+
+form button:hover {
+    background-color: #4cae4c;
+}
+
+form .error {
+    color: red;
+    font-size: 14px;
+}
+
+/* Responsive Design for Smaller Screens */
+@media screen and (max-width: 768px) {
+    form {
+        padding: 20px; /* Reduce padding on smaller screens */
+    }
+
+    form h2 {
+        font-size: 18px; /* Smaller heading size */
+    }
+
+    form input, form button {
+        padding: 12px; /* Increase padding for touch-friendly input */
+    }
+
+    form button {
+        width: 100%; /* Ensure the button takes full width */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        flex-direction: column; /* Stack items vertically for very small screens */
+        height: auto; /* Remove full viewport height */
+        padding: 10px; /* Reduce body padding */
+    }
+
+    form {
+        padding: 15px; /* Further reduce padding for small screens */
+        max-width: 100%; /* Ensure form width is 100% on small screens */
+    }
+
+    form h2 {
+        font-size: 16px; /* Even smaller heading size */
+    }
+
+    form input, form button {
+        font-size: 14px; /* Adjust font size for small screens */
+        padding: 10px; /* Ensure good padding for small screens */
+    }
+}
+
+/* Ensure dropdown and other inputs are unaffected by the top-right styling */
+select, input, textarea {
+    font-size: 14px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}

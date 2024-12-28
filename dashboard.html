@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaints Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-white-100 p-8">
+
+    <div class="relative">
+        <!-- Logo -->
+        <img src="computer service.jpg" id="logo" alt="Logo" class="h-20 m-5 block" />
+    
+        <!-- Top-right section -->
+        <div id="top-right" class="absolute top-5 right-5 flex items-center justify-end gap-3">
+            <!-- Welcome Text -->
+            <span class="text-gray-700 font-medium">Welcome, Admin</span>
+    
+            <!-- Logout Button -->
+            <button onclick="logout()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                Logout
+            </button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h1 class="text-3xl font-bold mb-6 text-center pl-80 ">Admin Dashboard</h1>
+
+        <!-- Filter Form -->
+<div class="bg-white p-4 ml-50  shadow-lg mb-6">
+    <form id="filter-form" class="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-9">
+        <input type="text" id="filter-ticket-number" placeholder="Ticket Number" class="px-4 py-2 border rounded">
+        <select id="filter-priority" class="px-4 py-2 border rounded">
+            <option value="">All Priorities</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+        </select>
+        <select id="filter-status" class="px-4 py-2 border rounded">
+            <option value="">All Statuses</option>
+            <option value="Open">Open</option>
+            <option value="Closed">Closed</option>
+        </select>
+        <select id="filter-category" class="px-4 py-2 border rounded">
+            <option value="">All Categories</option>
+            <option value="Hardware">Hardware</option>
+            <option value="Software">Software</option>
+            <option value="Other">Other</option>
+        </select>
+        <input type="date" id="filter-date" class="px-4 py-2 border rounded">
+        <input type="text" id="filter-customer-name" placeholder="Customer Name" class="px-4 py-2 border rounded"> <!-- New Name Filter -->
+        <button type="button" onclick="applyFilters()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Apply Filters</button>
+        <button type="button" onclick="goToAssignedTasks()" class="bg-yellow-100 text-black px-4 py-2 rounded hover:bg-yellow-500">Assigned Tasks</button>
+        <button class="bg-green-500 text-white p-1 px-50 py-2 rounded hover:bg-green-600 ml-2" onclick="printFilteredData()">
+            Print
+        </button>
+    </form>
+</div>
+
+        </div>
+
+        <!-- Tickets Table -->
+        <table class="w-max  bg-white border border-gray-300 rounded-lg shadow-md">
+            <thead>
+                <tr>
+                    <th class="px-6 py-2 border">ID</th>
+                    <th class="px-6 py-2 border">Ticket Number</th>
+                    <th class="px-6 py-2 border">Customer Email</th>
+                    <th class="px-6 py-2 border">Customer Name</th>
+                    <th class="px-6 py-2 border">Phone Number</th>
+                    <th class="px-6 py-2 border">Complaint Description</th>
+                    <th class="px-6 py-2 border">Priority</th>
+                    <th class="px-6 py-2 border">Category</th>
+                    <th class="px-6 py-2 border">Created At</th>
+                    <th class="px-6 py-2 border">Status</th>
+                    <th class="px-6 py-2 border">Assign</th>
+                    <th class="px-6 py-2 border">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="tickets-body">
+                <!-- Tickets will be rendered here -->
+            </tbody>
+        </table>
+
+        <!-- Modal for expert assignment -->
+        <div id="assignExpertModal" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl ">Assign Expert</h2>
+                <label for="expertSelect" class="block text-sm mb-2">Choose Expert:</label>
+                <select id="expertSelect" class="border p-2 w-full mb-2">
+                    <!-- Experts will be populated here -->
+                </select>
+                <div>
+                    <button id="assignExpertButton" class="bg-blue-500 text-white px-4 py-2 rounded">Assign Expert</button>
+                    <button id="closeModalButton" class="ml-4 bg-gray-500 text-white px-4 py-2 rounded">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function printFilteredData() {
+    const table = document.querySelector('table'); // Adjust the selector if necessary
+    const rows = table.querySelectorAll('tr');
+    const filteredRows = Array.from(rows).filter(row => row.style.display !== 'none');
+
+    const printWindow = window.open('', '', 'height=600,width=800');
+    printWindow.document.write('<html><head><title>Print Filtered Data</title>');
+    printWindow.document.write('<style>table { width: 100%; border-collapse: collapse; } td, th { border: 1px solid black; padding: 8px; }</style>');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write('<table>');
+
+    filteredRows.forEach((row, index) => {
+        const clonedRow = row.cloneNode(true);
+        if (index === 0) {
+            // Remove the header cell for actions column
+            const actionHeaderCell = clonedRow.querySelector('th:last-child');
+            if (actionHeaderCell) {
+                actionHeaderCell.remove();
+            }
+        } else {
+            // Remove the action cell for each row
+            const actionCell = clonedRow.querySelector('td:last-child');
+            if (actionCell) {
+                actionCell.remove();
+            }
+        }
+        printWindow.document.write(clonedRow.outerHTML);
+    });
+
+    printWindow.document.write('</table>');
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+}
+        function goToAssignedTasks() {
+            window.location.href = 'assigned_tasks.php'; // Replace with the actual page URL
+        }
+        function logout() {
+            // Redirect to the logout page or handle logout logic
+            window.location.href = 'logout.php';
+        }
+
+        let allTickets = [];  // Store all tickets globally
+        let selectedTicketId = null;  // To store the selected ticket ID when assigning expert
+
+        // Fetch all tickets
+        function fetchTickets() {
+            fetch('fetch_tickets.php')
+                .then(response => response.json())
+                .then(data => {
+                    allTickets = data;  // Save the fetched tickets to the global variable
+                    renderTickets(data); // Render the tickets initially
+                })
+                .catch(error => console.error('Error fetching tickets:', error));
+        }
+
+        // Apply filters to the tickets
+       // Apply filters to the tickets
+function applyFilters() {
+    const ticketNumber = document.getElementById('filter-ticket-number').value.trim();
+    const priority = document.getElementById('filter-priority').value;
+    const status = document.getElementById('filter-status').value;
+    const category = document.getElementById('filter-category').value.trim(); // Ensure trimming
+    const date = document.getElementById('filter-date').value;
+    const customerName = document.getElementById('filter-customer-name').value.trim(); // New Name Filter
+
+    // Filter tickets based on the selected filters
+    const filteredTickets = allTickets.filter(ticket => {
+        return (
+            (!ticketNumber || ticket.ticket_number.includes(ticketNumber)) &&
+            (!priority || ticket.priority === priority) &&
+            (!status || ticket.status === status) &&
+            (!category || ticket.category.trim().toLowerCase() === category.toLowerCase()) && // Trim and case-insensitive check
+            (!date || ticket.created_at.startsWith(date)) &&
+            (!customerName || ticket.customer_name.toLowerCase().includes(customerName.toLowerCase())) // Name Filter
+        );
+    });
+
+    // Render the filtered tickets
+    renderTickets(filteredTickets);
+}
+
+
+        // Render the tickets in the table
+        function renderTickets(data) {
+    const ticketsBody = document.getElementById('tickets-body');
+    ticketsBody.innerHTML = ''; // Clear existing rows
+
+    if (data.length === 0) {
+        ticketsBody.innerHTML = '<tr><td colspan="12" class="px-4 py-2 text-center text-gray-500">No tickets found</td></tr>';
+        return;
+    }
+
+    data.forEach(ticket => {
+        const createdAt = new Date(ticket.created_at); // Convert created_at to Date object
+        const date = createdAt.toLocaleDateString(); // Get date in locale format
+        const time = createdAt.toLocaleTimeString(); // Get time in locale format
+
+        const row = `
+            <tr id="ticket-${ticket.id}">
+                <td class="px-6 py-2">${ticket.id}</td>
+                <td class="px-6 py-2">${ticket.ticket_number}</td>
+                <td class="px-6 py-2">${ticket.customer_email}</td>
+                <td class="px-6 py-2">${ticket.customer_name}</td>
+                <td class="px-6 py-2">${ticket.phone_number || 'N/A'}</td>
+                <td class="px-6 py-2">${ticket.complaint_description}</td>
+                <td class="px-6 py-2">${ticket.priority}</td>
+                <td class="px-6 py-2">${ticket.category}</td>
+                <td class="px-6 py-2">
+                    <span>${date}<br>${time}</span>
+                </td>
+                <td class="px-2 py-2">
+                    <span class="px-2 py-1 text-sm rounded ${ticket.status === 'Open' ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700'}">${ticket.status}</span>
+                </td>
+                <td class="px-2 py-2">
+                    <span class="text-sm bg-yellow-100 p-2 rounded text-center " id="expert-${ticket.id}">${ticket.expert_name || 'Not Assigned'}</span>
+                </td>
+                <td class="px-2 py-2">
+                    <button class="bg-blue-500 text-white px-2 py-2 rounded hover:bg-blue-600" onclick="toggleStatus(${ticket.id}, '${ticket.status}')">
+                        ${ticket.status === 'Open' ? 'Close' : 'Open'}
+                    </button>
+                    <button class="bg-blue-400 text-white p-1 px-50 py-2 rounded hover:bg-blue-600 ml-2" onclick="openAssignExpertModal(${ticket.id})">
+                        Assign Expert
+                    </button>
+                </td>
+            </tr>
+        `;
+        ticketsBody.innerHTML += row;
+    });
+}
+
+
+        // Toggle the status of the ticket
+        function toggleStatus(ticketId, status) {
+            const newStatus = status === 'Open' ? 'Closed' : 'Open';
+
+            fetch('fetch_tickets.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `ticket_id=${ticketId}&status=${newStatus}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Ticket status updated successfully');
+                    fetchTickets(); // Reload the tickets
+                } else {
+                    alert('Error updating ticket status');
+                }
+            });
+        }
+
+        // Open the modal to assign an expert
+        function openAssignExpertModal(ticketId) {
+            selectedTicketId = ticketId; // Set the selected ticket ID
+            document.getElementById('assignExpertModal').classList.remove('hidden');
+            fetchExperts(); // Load experts
+        }
+
+        // Close the modal
+        document.getElementById('closeModalButton').onclick = function () {
+            document.getElementById('assignExpertModal').classList.add('hidden');
+        };
+
+        // Fetch the list of experts
+        function fetchExperts() {
+            fetch('fetch_experts.php')
+                .then(response => response.json())
+                .then(data => {
+                    const expertSelect = document.getElementById('expertSelect');
+                    expertSelect.innerHTML = '<option value="">Select Expert</option>'; // Clear existing options
+
+                    data.forEach(expert => {
+                        const option = document.createElement('option');
+                        option.value = expert.id;
+                        option.textContent = expert.name;
+                        expertSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching experts:', error));
+        }
+
+        // Assign the selected expert to the ticket
+        document.getElementById('assignExpertButton').onclick = function () {
+            const expertId = document.getElementById('expertSelect').value;
+
+            if (!expertId) {
+                alert('Please select an expert');
+                return;
+            }
+
+            fetch('assign_expert.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `ticket_id=${selectedTicketId}&expert_id=${expertId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Expert assigned successfully');
+                    
+                    // Update the ticket row in the table
+                    updateTicketRow(selectedTicketId, data.expert_name);
+                    document.getElementById('assignExpertModal').classList.add('hidden');
+                } else {
+                    alert('Error assigning expert');
+                }
+            });
+        }
+
+        // Function to update the assigned expert's name in the ticket row
+        function updateTicketRow(ticketId, expertName) {
+            const expertCell = document.getElementById(`expert-${ticketId}`); // Get the expert cell by ticket ID
+            if (expertCell) {
+                expertCell.textContent = expertName; // Update expert's name
+            }
+        }
+
+        // Initial fetch of tickets when the page loads
+        fetchTickets();
+    </script>
+</body>
+</html>
