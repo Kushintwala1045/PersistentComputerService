@@ -5,10 +5,10 @@ use PHPMailer\PHPMailer\Exception;
 require 'vendor/autoload.php';
 
 // Database connection
-$host = 'localhost'; // Replace with your database host
-$dbname = 'complaints_db'; // Replace with your database name
-$username = 'root'; // Replace with your database username
-$password = ''; // Replace with your database password
+$host = 'sql208.infinityfree.com'; // Replace with your database host
+$dbname = 'if0_37997732_complaints_db'; // Replace with your database name
+$username = 'if0_37997732'; // Replace with your database username
+$password = '5bs39z5fNHeupBL '; // Replace with your database password
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
